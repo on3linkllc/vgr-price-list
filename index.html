@@ -334,7 +334,35 @@ window.chg = function(name, d) {
   cart[name] = (cart[name] || 0) + d;
   if (cart[name] <= 0) delete cart[name];
   localStorage.setItem("vgr_cart", JSON.stringify(cart));
-  // Image preview (hover on desktop, tap lightbox everywhere)
+  render(); renderCart();
+};
+
+document.getElementById("sendQuote").onclick = () => {
+  const names = Object.keys(cart);
+  if (!names.length) return;
+  let total = 0;
+  const lines = names.map(n => {
+    const r = byName(n); const t = money(r.wholesale) * cart[n]; total += t;
+    return `- ${cart[n]} x ${n} @ ${r.wholesale} = ${fmt(t)}`;
+  });
+  const body = `Hello VGR America,%0D%0A%0D%0AI would like to request a quote for the following items:%0D%0A%0D%0A` +
+    encodeURIComponent(lines.join("\n")).replace(/%0A/g, "%0D%0A") +
+    `%0D%0A%0D%0AWholesale subtotal: ${encodeURIComponent(fmt(total))}` +
+    `%0D%0A%0D%0AName:%0D%0ACompany:%0D%0APhone:%0D%0AShipping ZIP code:`;
+  location.href = `mailto:hello@vgramerica.com?subject=${encodeURIComponent("Quote Request — VGR Wholesale Price List")}&body=${body}`;
+};
+
+document.getElementById("clearCart").onclick = () => { cart = {}; localStorage.setItem("vgr_cart", "{}"); render(); renderCart(); };
+document.getElementById("cartBtn").onclick = () => { document.body.classList.add("cart-open"); renderCart(); };
+document.getElementById("closeCart").onclick = () => document.body.classList.remove("cart-open");
+document.getElementById("overlay").onclick = () => document.body.classList.remove("cart-open");
+document.getElementById("q").addEventListener("input", render);
+document.querySelectorAll("thead th[data-col]").forEach(th => th.addEventListener("click", () => {
+  const c = +th.dataset.col;
+  if (sortCol === c) sortAsc = !sortAsc; else { sortCol = c; sortAsc = true; }
+  render();
+}));
+// Image preview (hover on desktop, tap lightbox everywhere)
 const hoverCard = document.getElementById("hoverCard");
 const hcImg = document.getElementById("hcImg"), hcCap = document.getElementById("hcCap");
 const canHover = window.matchMedia("(hover: hover)").matches;
@@ -381,34 +409,6 @@ document.getElementById("lbClose").onclick = () => lb.classList.remove("show");
 lb.addEventListener("click", e => { if (e.target === lb) lb.classList.remove("show"); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") lb.classList.remove("show"); });
 
-render(); renderCart();
-};
-
-document.getElementById("sendQuote").onclick = () => {
-  const names = Object.keys(cart);
-  if (!names.length) return;
-  let total = 0;
-  const lines = names.map(n => {
-    const r = byName(n); const t = money(r.wholesale) * cart[n]; total += t;
-    return `- ${cart[n]} x ${n} @ ${r.wholesale} = ${fmt(t)}`;
-  });
-  const body = `Hello VGR America,%0D%0A%0D%0AI would like to request a quote for the following items:%0D%0A%0D%0A` +
-    encodeURIComponent(lines.join("\n")).replace(/%0A/g, "%0D%0A") +
-    `%0D%0A%0D%0AWholesale subtotal: ${encodeURIComponent(fmt(total))}` +
-    `%0D%0A%0D%0AName:%0D%0ACompany:%0D%0APhone:%0D%0AShipping ZIP code:`;
-  location.href = `mailto:hello@vgramerica.com?subject=${encodeURIComponent("Quote Request — VGR Wholesale Price List")}&body=${body}`;
-};
-
-document.getElementById("clearCart").onclick = () => { cart = {}; localStorage.setItem("vgr_cart", "{}"); render(); renderCart(); };
-document.getElementById("cartBtn").onclick = () => { document.body.classList.add("cart-open"); renderCart(); };
-document.getElementById("closeCart").onclick = () => document.body.classList.remove("cart-open");
-document.getElementById("overlay").onclick = () => document.body.classList.remove("cart-open");
-document.getElementById("q").addEventListener("input", render);
-document.querySelectorAll("thead th[data-col]").forEach(th => th.addEventListener("click", () => {
-  const c = +th.dataset.col;
-  if (sortCol === c) sortAsc = !sortAsc; else { sortCol = c; sortAsc = true; }
-  render();
-}));
 render(); renderCart();
 </script>
 </body>
