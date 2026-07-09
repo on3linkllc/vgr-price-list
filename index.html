@@ -88,6 +88,29 @@
   footer .validity .sub { color: var(--muted); margin-top: 6px; font-size: 12px; }
   .social { margin-top: 8px; }
 
+  /* Product images */
+  .prodcell { display: flex; align-items: center; gap: 10px; }
+  .pimg { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; background: #fff;
+    border: 1px solid var(--line); cursor: zoom-in; flex: none; }
+  .noimg { width: 44px; height: 44px; flex: none; }
+  #hoverCard { position: fixed; z-index: 90; width: 280px; background: #fff; border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: 0 12px 40px rgba(18,51,47,.18); padding: 12px; opacity: 0;
+    pointer-events: none; transform: scale(.97); transition: opacity .15s ease, transform .15s ease; }
+  #hoverCard.show { opacity: 1; transform: scale(1); }
+  #hoverCard img { width: 100%; height: 220px; object-fit: contain; display: block; }
+  #hoverCard .cap { font-size: 12px; font-weight: 600; text-align: center; margin-top: 8px; color: var(--muted); }
+  .lightbox { position: fixed; inset: 0; background: rgba(18,51,47,.55); display: none; align-items: center;
+    justify-content: center; z-index: 95; padding: 24px; }
+  .lightbox.show { display: flex; }
+  .lightbox .box { background: #fff; border-radius: 16px; padding: 18px; max-width: 520px; width: 100%; position: relative; }
+  .lightbox img { width: 100%; max-height: 60vh; object-fit: contain; }
+  .lightbox .cap { text-align: center; font-weight: 700; margin-top: 10px; }
+  .lightbox .lclose { position: absolute; top: 10px; right: 14px; border: none; background: none; font-size: 20px;
+    color: var(--muted); cursor: pointer; }
+  .citem img.ci { width: 34px; height: 34px; object-fit: contain; border: 1px solid var(--line);
+    border-radius: 6px; flex: none; }
+  @media (prefers-reduced-motion: reduce) { #hoverCard { transition: none; } }
+
   /* Floating buttons */
   .fabs { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 60; }
   .fab { width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer; display: flex;
@@ -131,6 +154,8 @@
     .card { border-radius: 0; border: none; }
     table { min-width: 0; }
     thead th { background: var(--teal) !important; color: #fff !important; }
+    #hoverCard, .lightbox { display: none !important; }
+    .pimg, .noimg { width: 34px; height: 34px; }
     tbody tr { break-inside: avoid; }
     footer { margin-top: 18px; }
   }
@@ -206,6 +231,9 @@
   </footer>
 </div>
 
+<div id="hoverCard" aria-hidden="true"><img id="hcImg" alt=""><div class="cap" id="hcCap"></div></div>
+<div class="lightbox" id="lightbox"><div class="box"><button class="lclose" id="lbClose">✕</button><img id="lbImg" alt=""><div class="cap" id="lbCap"></div></div></div>
+
 <div class="fabs">
   <a class="fab msgr" href="https://m.me/61591573622554" target="_blank" rel="noopener" title="Chat on Messenger">
     <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.44 3.14 7.17.16.15.26.35.27.57l.05 1.78c.02.57.6.94 1.12.71l1.98-.87c.17-.08.36-.09.53-.04.91.25 1.88.38 2.91.38 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm6 7.46l-2.94 4.66c-.47.74-1.47.93-2.17.4l-2.34-1.75a.6.6 0 0 0-.72 0l-3.16 2.4c-.42.32-.97-.18-.69-.63l2.94-4.66c.47-.74 1.47-.93 2.17-.4l2.34 1.75c.21.16.51.16.72 0l3.16-2.4c.42-.32.97.18.69.63z"/></svg>
@@ -229,7 +257,7 @@
 </aside>
 
 <script>
-const EMBEDDED = [{"name": "STEPLESS PRO 3 IN 1", "wholesale": "$116.99", "retail": "$240.99", "status": "stock"}, {"name": "STEPLESS PRO 4 IN 1", "wholesale": "$185.99", "retail": "$402.99", "status": "special"}, {"name": "V-001", "wholesale": "$50.99", "retail": "$96.99", "status": "stock"}, {"name": "V-003", "wholesale": "$37.99", "retail": "$65.99", "status": "stock"}, {"name": "V-015", "wholesale": "$68.99", "retail": "$141.99", "status": "stock"}, {"name": "V-035 S3", "wholesale": "$200.99", "retail": "$448.99", "status": "special"}, {"name": "V-285 S4", "wholesale": "$144.99", "retail": "$301.99", "status": "special"}, {"name": "V-285C", "wholesale": "$38.99", "retail": "$68.99", "status": "stock"}, {"name": "V-285T", "wholesale": "$30.99", "retail": "$49.99", "status": "stock"}, {"name": "V-377", "wholesale": "$34.99", "retail": "$58.99", "status": "stock"}, {"name": "V-401 DRYER", "wholesale": "$57.99", "retail": "$115.99", "status": "special"}, {"name": "V-427 DRYER", "wholesale": "$52.99", "retail": "$101.99", "status": "special"}, {"name": "V-506 N", "wholesale": "$39.99", "retail": "$70.99", "status": "special"}, {"name": "V-600&900", "wholesale": "$53.99", "retail": "$86.99", "status": "stock"}, {"name": "V-606N HAIR STRAIGHNER", "wholesale": "$39.99", "retail": "$70.99", "status": "special"}, {"name": "V-640 S3", "wholesale": "$75.99", "retail": "$141.99", "status": "stock"}, {"name": "V-640 S4", "wholesale": "$145.99", "retail": "$304.99", "status": "special"}, {"name": "V-640C", "wholesale": "$57.99", "retail": "$113.99", "status": "special"}, {"name": "V-668C", "wholesale": "$50.99", "retail": "$96.99", "status": "special"}, {"name": "V-668T", "wholesale": "$40.99", "retail": "$73.99", "status": "special"}, {"name": "V-850C / V-850T S2", "wholesale": "$71.99", "retail": "$140.99", "status": "special"}, {"name": "V-855C / V-855T S2", "wholesale": "$78.99", "retail": "$157.99", "status": "special"}, {"name": "V-856 / C V-856T / V-856S S3", "wholesale": "$117.99", "retail": "$245.99", "status": "special"}, {"name": "V-881C / V-881T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special"}, {"name": "V-882C / V-882T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special"}, {"name": "V-882C / V-882T / V-882S S3", "wholesale": "$132.99", "retail": "$280.99", "status": "special"}, {"name": "V-884C / V-884T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special"}, {"name": "V-884C / V-884T / V-884S S3", "wholesale": "$130.99", "retail": "$276.99", "status": "special"}, {"name": "V-885C / V-885T S2", "wholesale": "$92.99", "retail": "$192.99", "status": "special"}, {"name": "V-906", "wholesale": "$26.99", "retail": "$46.99", "status": "stock"}, {"name": "V-977", "wholesale": "$37.99", "retail": "$73.99", "status": "special"}, {"name": "V-994", "wholesale": "$61.99", "retail": "$134.99", "status": "stock"}];
+const EMBEDDED = [{"name": "STEPLESS PRO 3 IN 1", "wholesale": "$116.99", "retail": "$240.99", "status": "stock", "img": "vgr-stepless-pro-4-in-1-and-3-in-1.webp"}, {"name": "STEPLESS PRO 4 IN 1", "wholesale": "$185.99", "retail": "$402.99", "status": "special", "img": "vgr-stepless-pro-4-in-1-and-3-in-1.webp"}, {"name": "V-001", "wholesale": "$50.99", "retail": "$96.99", "status": "stock", "img": "v-001-v-977.webp"}, {"name": "V-003", "wholesale": "$37.99", "retail": "$65.99", "status": "stock", "img": null}, {"name": "V-015", "wholesale": "$68.99", "retail": "$141.99", "status": "stock", "img": "v-015-v-334-v-994.webp"}, {"name": "V-035 S3", "wholesale": "$200.99", "retail": "$448.99", "status": "special", "img": "v-035c-v-035t-v-035s.webp"}, {"name": "V-285 S4", "wholesale": "$144.99", "retail": "$301.99", "status": "special", "img": "v-285s4.webp"}, {"name": "V-285C", "wholesale": "$38.99", "retail": "$68.99", "status": "stock", "img": "v-285c-v-285t-v-285s-v-285hd.webp"}, {"name": "V-285T", "wholesale": "$30.99", "retail": "$49.99", "status": "stock", "img": "v-285c-v-285t-v-285s-v-285hd.webp"}, {"name": "V-377", "wholesale": "$34.99", "retail": "$58.99", "status": "stock", "img": "v-377-v-378.webp"}, {"name": "V-401 DRYER", "wholesale": "$57.99", "retail": "$115.99", "status": "special", "img": "v-401.webp"}, {"name": "V-427 DRYER", "wholesale": "$52.99", "retail": "$101.99", "status": "special", "img": "v-427.webp"}, {"name": "V-506 N", "wholesale": "$39.99", "retail": "$70.99", "status": "special", "img": "v-506w-v-506n.webp"}, {"name": "V-600&900", "wholesale": "$53.99", "retail": "$86.99", "status": "stock", "img": null}, {"name": "V-606N HAIR STRAIGHNER", "wholesale": "$39.99", "retail": "$70.99", "status": "special", "img": null}, {"name": "V-640 S3", "wholesale": "$75.99", "retail": "$141.99", "status": "stock", "img": "v-640c-v-640t-v-640s-v-640hd.webp"}, {"name": "V-640 S4", "wholesale": "$145.99", "retail": "$304.99", "status": "special", "img": "v-640c-v-640t-v-640s-v-640hd.webp"}, {"name": "V-640C", "wholesale": "$57.99", "retail": "$113.99", "status": "special", "img": "v-640c-v-640t-v-640s-v-640hd.webp"}, {"name": "V-668C", "wholesale": "$50.99", "retail": "$96.99", "status": "special", "img": "v-668c-v-668t.webp"}, {"name": "V-668T", "wholesale": "$40.99", "retail": "$73.99", "status": "special", "img": "v-668c-v-668t.webp"}, {"name": "V-850C / V-850T S2", "wholesale": "$71.99", "retail": "$140.99", "status": "special", "img": "v-850c-v-850t.webp"}, {"name": "V-855C / V-855T S2", "wholesale": "$78.99", "retail": "$157.99", "status": "special", "img": null}, {"name": "V-856 / C V-856T / V-856S S3", "wholesale": "$117.99", "retail": "$245.99", "status": "special", "img": "v-856.webp"}, {"name": "V-881C / V-881T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special", "img": "v-881c-v-881t.webp"}, {"name": "V-882C / V-882T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special", "img": "v-882c-v-882t-v-882s.webp"}, {"name": "V-882C / V-882T / V-882S S3", "wholesale": "$132.99", "retail": "$280.99", "status": "special", "img": "v-882c-v-882t-v-882s.webp"}, {"name": "V-884C / V-884T S2", "wholesale": "$91.99", "retail": "$189.99", "status": "special", "img": "v-884c-v-884t-v-884s.webp"}, {"name": "V-884C / V-884T / V-884S S3", "wholesale": "$130.99", "retail": "$276.99", "status": "special", "img": "v-884c-v-884t-v-884s.webp"}, {"name": "V-885C / V-885T S2", "wholesale": "$92.99", "retail": "$192.99", "status": "special", "img": "v-885c-v-885t.webp"}, {"name": "V-906", "wholesale": "$26.99", "retail": "$46.99", "status": "stock", "img": null}, {"name": "V-977", "wholesale": "$37.99", "retail": "$73.99", "status": "special", "img": "v-001-blue-v-977-blue-trimmer-v-377-blue.webp"}, {"name": "V-994", "wholesale": "$61.99", "retail": "$134.99", "status": "stock", "img": "v-015-v-334-v-994.webp"}];
 const ISSUED = "July 9, 2026";
 const VALID = "August 8, 2026";
 let data = EMBEDDED, sortCol = null, sortAsc = true;
@@ -275,7 +303,10 @@ function render() {
     const badge = r.status === "special"
       ? '<span class="badge special">Special Order</span>'
       : '<span class="badge stock">In Stock</span>';
-    return `<tr class="${i % 2 ? "even" : ""}"><td>${esc(r.name)}</td><td>${badge}</td>` +
+    const im = r.img
+      ? `<img class="pimg" loading="lazy" src="img/thumbs/${r.img}" data-full="img/full/${r.img}" alt="${esc(r.name)}">`
+      : '<span class="noimg"></span>';
+    return `<tr class="${i % 2 ? "even" : ""}" data-i="${i}"><td><div class="prodcell">${im}<span>${esc(r.name)}</span></div></td><td>${badge}</td>` +
       `<td class="num">${esc(r.wholesale)}</td><td class="num retail">${esc(r.retail)}</td>` +
       `<td class="cartcol" style="text-align:right">${ctl}</td></tr>`;
   }).join("");
@@ -292,7 +323,8 @@ function renderCart() {
   if (!names.length) { box.innerHTML = '<div class="cart-empty">Your quote cart is empty.<br>Use “+ Add” on any product.</div>'; return; }
   box.innerHTML = names.map(n => {
     const r = byName(n); if (!r) return "";
-    return `<div class="citem"><div><div class="n">${esc(n)}</div><div class="p">${esc(r.wholesale)} × ${cart[n]} = ${fmt(money(r.wholesale) * cart[n])}</div></div>` +
+    const ci = r.img ? `<img class="ci" src="img/thumbs/${r.img}" alt="">` : "";
+    return `<div class="citem">${ci}<div style="flex:1"><div class="n">${esc(n)}</div><div class="p">${esc(r.wholesale)} × ${cart[n]} = ${fmt(money(r.wholesale) * cart[n])}</div></div>` +
       `<span class="qtyctl"><button onclick="chg('${esc(n)}',-1)">−</button><span class="q">${cart[n]}</span><button onclick="chg('${esc(n)}',1)">+</button></span>` +
       `<button class="rm" title="Remove" onclick="chg('${esc(n)}',-999)">🗑&#xFE0E;</button></div>`;
   }).join("");
@@ -302,7 +334,54 @@ window.chg = function(name, d) {
   cart[name] = (cart[name] || 0) + d;
   if (cart[name] <= 0) delete cart[name];
   localStorage.setItem("vgr_cart", JSON.stringify(cart));
-  render(); renderCart();
+  // Image preview (hover on desktop, tap lightbox everywhere)
+const hoverCard = document.getElementById("hoverCard");
+const hcImg = document.getElementById("hcImg"), hcCap = document.getElementById("hcCap");
+const canHover = window.matchMedia("(hover: hover)").matches;
+let hcTimer = null;
+
+function placeCard(x, y) {
+  const w = 280, h = hoverCard.offsetHeight || 280, pad = 16;
+  let left = x + 22, top = y - h / 2;
+  if (left + w + pad > innerWidth) left = x - w - 22;
+  top = Math.max(pad, Math.min(top, innerHeight - h - pad));
+  hoverCard.style.left = left + "px"; hoverCard.style.top = top + "px";
+}
+
+document.getElementById("rows").addEventListener("mouseover", e => {
+  if (!canHover) return;
+  const tr = e.target.closest("tr");
+  const img = tr && tr.querySelector(".pimg");
+  clearTimeout(hcTimer);
+  if (!img) { hoverCard.classList.remove("show"); return; }
+  const full = img.dataset.full;
+  new Image().src = full; // preload
+  hcTimer = setTimeout(() => {
+    hcImg.src = full; hcCap.textContent = img.alt;
+    placeCard(e.clientX, e.clientY);
+    hoverCard.classList.add("show");
+  }, 150);
+});
+document.getElementById("rows").addEventListener("mousemove", e => {
+  if (hoverCard.classList.contains("show")) placeCard(e.clientX, e.clientY);
+});
+document.getElementById("rows").addEventListener("mouseleave", () => {
+  clearTimeout(hcTimer); hoverCard.classList.remove("show");
+});
+
+const lb = document.getElementById("lightbox");
+document.getElementById("rows").addEventListener("click", e => {
+  const img = e.target.closest(".pimg");
+  if (!img) return;
+  document.getElementById("lbImg").src = img.dataset.full;
+  document.getElementById("lbCap").textContent = img.alt;
+  lb.classList.add("show");
+});
+document.getElementById("lbClose").onclick = () => lb.classList.remove("show");
+lb.addEventListener("click", e => { if (e.target === lb) lb.classList.remove("show"); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") lb.classList.remove("show"); });
+
+render(); renderCart();
 };
 
 document.getElementById("sendQuote").onclick = () => {

@@ -33,11 +33,34 @@ def parse(md):
             })
     return rows
 
+import os
+def img_tokens(s):
+    out = []
+    for m in re.findall(r'[Vv]-?\s?(\d+)\s*([A-Za-z]*)', s):
+        if m[1]:
+            out.append('V' + m[0] + m[1].upper())
+        out.append('V' + m[0])
+    if 'stepless' in s.lower():
+        out.append('STEPLESS')
+    return out
+
+def find_image(name, imap):
+    for t in img_tokens(name):
+        if t in imap:
+            return imap[t]
+    return None
+
 def us_date(d):
     return d.strftime("%B %d, %Y").replace(" 0", " ")
 
 md = open(sys.argv[1]).read()
 rows = parse(md)
+try:
+    imap = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'img', 'map.json')))
+except FileNotFoundError:
+    imap = {}
+for r in rows:
+    r["img"] = find_image(r["name"], imap)
 if len(rows) < 5:
     sys.exit("ERROR: parsed only %d rows — sheet format may have changed, aborting." % len(rows))
 
