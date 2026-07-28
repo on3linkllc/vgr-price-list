@@ -30,7 +30,8 @@
   header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
   .logo svg, .logo img { width: 170px; height: auto; display: block; }
   .logo .distributor-tag { margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
-    color: var(--muted); text-transform: uppercase; }
+    color: var(--muted); text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+  .logo .distributor-tag .vgr-logo-inline { height: 14px; width: auto; display: inline-block; }
   .headings { text-align: right; }
   .headings h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; }
   .headings p { color: var(--muted); font-size: 13px; margin-top: 4px; }
@@ -170,7 +171,7 @@
 <body>
 <div class="page">
   <header>
-    <div class="logo"><img src="img/branding/barbermaxx_logo.svg" alt="Barbermaxx logo"><div class="distributor-tag">Official U.S. Distributor for VGR</div></div>
+    <div class="logo"><img src="img/branding/barbermaxx_logo.svg" alt="Barbermaxx logo"><div class="distributor-tag">Official U.S. Distributor for <img class="vgr-logo-inline" src="img/branding/vgr_logo.svg" alt="VGR"></div></div>
     <div class="headings">
       <h1>Wholesale Price List</h1>
       <p>Professional Hair &amp; Grooming Tools</p>
@@ -209,12 +210,12 @@
 
   <footer>
     <div class="contact">
-      <div class="name">Leo De Freitas — Barbermaxx</div>
-      <div><a href="mailto:hello@vgramerica.com">hello@vgramerica.com</a> · <a href="https://www.vgramerica.com">www.vgramerica.com</a></div>
+      <div class="name">Leo Freitas — Barbermaxx USA LLC</div>
+      <div><a href="mailto:hello@brmaxx.com">hello@brmaxx.com</a> · <a href="https://www.brmaxx.com">www.brmaxx.com</a></div>
       <div>Office: <a href="tel:+17273006697">727-300-6697</a> · Cell: <a href="tel:+12392019015">239-201-9015</a></div>
       <div class="social">
-        <a href="https://www.instagram.com/vgramerica" target="_blank" rel="noopener">Instagram @vgramerica</a> ·
-        <a href="https://www.facebook.com/profile.php?id=61591573622554" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.instagram.com/barbermaxxusa" target="_blank" rel="noopener">Instagram @barbermaxxusa</a> ·
+        <a href="https://www.facebook.com/profile.php?id=61572153082958" target="_blank" rel="noopener">Facebook</a>
       </div>
       <div class="distributor-note" style="margin-top:6px; font-size:12px; color: var(--muted);">Barbermaxx is the official U.S. distributor for VGR Professional Hair &amp; Grooming Tools.</div>
     </div>
@@ -339,11 +340,11 @@ document.getElementById("sendQuote").onclick = () => {
     const r = byName(n); const t = money(r.wholesale) * cart[n]; total += t;
     return `- ${cart[n]} x ${n} @ ${r.wholesale} = ${fmt(t)}`;
   });
-  const body = `Hello VGR America,%0D%0A%0D%0AI would like to request a quote for the following items:%0D%0A%0D%0A` +
+  const body = `Hello Barbermaxx,%0D%0A%0D%0AI would like to request a quote for the following items:%0D%0A%0D%0A` +
     encodeURIComponent(lines.join("\n")).replace(/%0A/g, "%0D%0A") +
     `%0D%0A%0D%0AWholesale subtotal: ${encodeURIComponent(fmt(total))}` +
     `%0D%0A%0D%0AName:%0D%0ACompany:%0D%0APhone:%0D%0AShipping ZIP code:`;
-  location.href = `mailto:hello@vgramerica.com?subject=${encodeURIComponent("Quote Request — VGR Wholesale Price List")}&body=${body}`;
+  location.href = `mailto:hello@brmaxx.com?subject=${encodeURIComponent("Quote Request — VGR Wholesale Price List")}&body=${body}`;
 };
 
 document.getElementById("clearCart").onclick = () => { cart = {}; localStorage.setItem("vgr_cart", "{}"); render(); renderCart(); };
