@@ -25,7 +25,7 @@
   "wholesale": "$37.99",
   "retail": "$65.99",
   "status": "stock",
-  "img": null
+  "img": "v-003.webp"
  },
  {
   "name": "V-015",
@@ -151,7 +151,7 @@
   "wholesale": "$78.99",
   "retail": "$157.99",
   "status": "special",
-  "img": null
+  "img": "v-855c-v-855t-s2.webp"
  },
  {
   "name": "V-856 / C V-856T / V-856S S3",
