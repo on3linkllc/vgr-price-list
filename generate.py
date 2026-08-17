@@ -14,23 +14,43 @@ def charm(v):
     return "${:,.2f}".format(result)
 
 def parse(md):
-    rows, header = [], False
+    # Column-order-agnostic parser: maps columns by header name instead of
+    # fixed position, and stops after the first table (a sheet may contain
+    # more than one tab/table -- e.g. a "Original"/backup tab -- only the
+    # first one is the live price list).
+    rows, header, col = [], False, {}
     for line in md.split('\n'):
         if not line.strip().startswith('|'):
             continue
         cells = [c.strip() for c in line.strip().strip('|').split('|')]
         cells = [c for c in cells if c]
-        if not header:
-            if any(re.search(r'produto|product', c, re.I) for c in cells):
-                header = True
+        if not cells:
             continue
-        if len(cells) >= 4 and not re.match(r'^:?-+:?$', cells[0]):
-            rows.append({
-                "name": cells[0],
-                "wholesale": charm(cells[1]),
-                "retail": charm(cells[2]),
-                "status": "special" if "special" in cells[3].lower() else "stock",
-            })
+        if re.match(r'^:?-+:?$', cells[0]):
+            continue
+        if any(re.search(r'produto|product', c, re.I) for c in cells):
+            if header:
+                break  # second table's header -- stop, only use the first table
+            header = True
+            for i, c in enumerate(cells):
+                cl = c.lower()
+                if 'produto' in cl or 'product' in cl:
+                    col['name'] = i
+                elif 'wholesale' in cl:
+                    col['wholesale'] = i
+                elif 'retail' in cl:
+                    col['retail'] = i
+                elif 'status' in cl:
+                    col['status'] = i
+            continue
+        if not header or len(cells) < 4:
+            continue
+        rows.append({
+            "name": cells[col['name']],
+            "wholesale": charm(cells[col['wholesale']]),
+            "retail": charm(cells[col['retail']]),
+            "status": "special" if "special" in cells[col['status']].lower() else "stock",
+        })
     return rows
 
 import os
