@@ -84,6 +84,20 @@
   "img": "v-640c-v-640t-v-640s-v-640hd.webp"
  },
  {
+  "name": "V-035 S3",
+  "wholesale": "$198.99",
+  "retail": "$377.99",
+  "status": "stock",
+  "img": "v-035c-v-035t-v-035s.webp"
+ },
+ {
+  "name": "V-640C",
+  "wholesale": "$36.99",
+  "retail": "$57.99",
+  "status": "special",
+  "img": "v-640c-v-640t-v-640s-v-640hd.webp"
+ },
+ {
   "name": "V-881C / V-881T S2",
   "wholesale": "$89.99",
   "retail": "$162.99",
@@ -126,13 +140,6 @@
   "img": "vgr-stepless-pro-4-in-1-and-3-in-1.webp"
  },
  {
-  "name": "V-035 S3",
-  "wholesale": "$198.99",
-  "retail": "$377.99",
-  "status": "special",
-  "img": "v-035c-v-035t-v-035s.webp"
- },
- {
   "name": "V-285 S4",
   "wholesale": "$136.99",
   "retail": "$248.99",
@@ -171,13 +178,6 @@
   "name": "V-640 S4",
   "wholesale": "$139.99",
   "retail": "$250.99",
-  "status": "special",
-  "img": "v-640c-v-640t-v-640s-v-640hd.webp"
- },
- {
-  "name": "V-640C",
-  "wholesale": "$36.99",
-  "retail": "$57.99",
   "status": "special",
   "img": "v-640c-v-640t-v-640s-v-640hd.webp"
  },
